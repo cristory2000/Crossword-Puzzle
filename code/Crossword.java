@@ -22,7 +22,7 @@ public class Crossword
             //add dictionary file to whichever structure was chosen
             while(fileScan.hasNext())
             {
-                D.add(fileScan.next());
+                D.add(fileScan.next()) ;
                 
             }
             fileScan.close();
