@@ -15,20 +15,10 @@ public class Crossword
     {
             //input the dictionary file
             
-            Scanner fileScan = new Scanner(new FileInputStream("dict8.txt"));
+            Scanner fileScan = new Scanner(new FileInputStream(args[0]));
             Scanner boardScan = new Scanner(new FileInputStream(args[1]));
-            //type in whether using a dlb
-            String input = args[0];
-            
-
-            if(input.equals("DLB"))
-            {
-                D = new MyDictionary();
-            }
-            else
-            {
-                D = new MyDictionary();
-            }
+        
+                D=new MyDictionary();
             //add dictionary file to whichever structure was chosen
             while(fileScan.hasNext())
             {
@@ -36,15 +26,8 @@ public class Crossword
                 
             }
             fileScan.close();
+            crosswordBoardcreator(boardScan);
             
-
-            
-            
-            
-            
-            
-            
-            crosswordBoardcreator();
             colStr= new StringBuilder[BoardSize];
             rowStr= new StringBuilder[BoardSize];
             for (int i = 0; i < colStr.length; i++) {
@@ -66,40 +49,23 @@ public class Crossword
     }
       
       
-    public static void crosswordBoardcreator() throws FileNotFoundException
+    public static void crosswordBoardcreator(Scanner board) throws FileNotFoundException
       { 
             // Scanner reader;
-            Scanner scan;
-            Scanner fReader;
-            File fName;
-            //enter crowssword board in
-        
-            while(true)
-            { 
-                {
-                    scan = new Scanner(System.in);
-                    System.out.println("Enter Crossword Board");
-                    String l=scan.nextLine();
-                    fName=new File(l);
-                    fReader=new Scanner(fName);
-                    break;
-                }
-            }
-            scan.close();
+            Scanner scan=board;
             //create crossword board and input values
-            String line=fReader.nextLine();
+            String line=scan.nextLine();
             BoardSize=Integer.parseInt(line);
             crossword= new char[BoardSize][BoardSize];
-           
             for(int i=0;i<BoardSize;i++)
             {
-                 line=fReader.nextLine();
+                 line=scan.nextLine();
                 for(int j=0;j<BoardSize;j++)
                 {
                     crossword[i][j]=Character.toLowerCase(line.charAt(j));
                 }
             }
-            fReader.close();
+            scan.close();
             //print crossword
            /*  for (int i = 0; i < BoardSize; i++)
             {
@@ -186,12 +152,9 @@ public class Crossword
         
         public static boolean isValid(char c,int row,int col)
         {
-      
-           
             rowStr[row].append(c);
             colStr[col].append(c);
-              
-            
+                 
            int rtype =(D.searchPrefix(rowStr[row]));
             int ctype=(D.searchPrefix(colStr[col]));
             //if col is not an end index
