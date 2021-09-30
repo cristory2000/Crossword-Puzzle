@@ -219,7 +219,7 @@ public class Crossword
                 
          
              }
-             System.out.println("The Score is: "+score);
+             System.out.println("Score: "+score);
            
         }
         private static Coordinates nextCoordinates(int row, int col)
