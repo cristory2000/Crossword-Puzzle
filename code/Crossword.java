@@ -14,37 +14,37 @@ public class Crossword
     static Map<Character,Character> letters= new HashMap<>();
     public static void main(String args[]) throws IOException
     {
-            //input the dictionary file
+            //input the dictionary file through arguments
             
             Scanner fileScan = new Scanner(new FileInputStream(args[0]));
             Scanner boardScan = new Scanner(new FileInputStream(args[1]));
             Scanner scoreBoard = new Scanner(new FileInputStream("letterpoints.txt"));
+            //add dictionary file and input the the dict8.txt file
             D=new MyDictionary();
-            //add dictionary file to whichever structure was chosen
             while(fileScan.hasNext())
             {
                 D.add(fileScan.next());
             }
             fileScan.close();
+            //create the crossword and input the chosen test file
             crosswordBoardcreator(boardScan);
-            //making the score hash
+            //making the score hashtable for the crossword
             while(scoreBoard.hasNext())
             {
                 String line=scoreBoard.nextLine();
                 letters.put(Character.toLowerCase(line.charAt(0)), line.charAt(2));
             }
+            //initialize strinbuilder arrays  with sizes
             colStr= new StringBuilder[BoardSize];
             rowStr= new StringBuilder[BoardSize];
+            //initalize all stribuilders so they are not null
             for (int i = 0; i < colStr.length; i++) {
                 colStr[i] = new StringBuilder("");
                 rowStr[i] = new StringBuilder("");
             }
-                crossFiller(0,0, rowStr, colStr);
-                
-                
+            //crossword backtracking algorithm that fills crossword    
+            crossFiller(0,0, rowStr, colStr);           
     }
-      
-      
     public static void crosswordBoardcreator(Scanner board) throws FileNotFoundException
       { 
             // Scanner reader;
@@ -53,6 +53,7 @@ public class Crossword
             String line=scan.nextLine();
             BoardSize=Integer.parseInt(line);
             crossword= new char[BoardSize][BoardSize];
+           //fill crowssword with test file
             for(int i=0;i<BoardSize;i++)
             {
                  line=scan.nextLine();
@@ -62,15 +63,7 @@ public class Crossword
                 }
             }
             scan.close();
-            //print crossword
-           /*  for (int i = 0; i < BoardSize; i++)
-            {
-                for (int j = 0; j < BoardSize; j++)
-                {
-                    System.out.print(crossword[i][j] + " ");
-                }
-                System.out.println();
-            } */
+         
         }
         public static void crossFiller(int row,int col,StringBuilder[] rowStr,StringBuilder[] colStr)
         {
@@ -79,11 +72,11 @@ public class Crossword
             switch(crossword[row][col])
             {
                 case '+':
+                    //iterate for all the possible letters
                     for(char c='a';c<='z';c++)
                     {
                         if(isValid(c,row, col))
                         {
-                            
                             rowStr[row].append(c);
                             colStr[col].append(c);
                            
@@ -95,12 +88,12 @@ public class Crossword
                             }
                             else
                             {
-                               
+                                //get next coordinates
                                 nextCoords = nextCoordinates(row, col);
+                                //recurse two next coordinate
                                 crossFiller (nextCoords.row, nextCoords.col, rowStr, colStr);
                                 rowStr[row].deleteCharAt(rowStr[row].length()-1);
                                 colStr[col].deleteCharAt(colStr[col].length()-1);  
-                               
                             }
                         }
                     }
@@ -130,7 +123,7 @@ public class Crossword
                     
                     if(row == BoardSize-1 && col == BoardSize-1)
                     {
-
+                        //print board and score
                          printBoard(); 
                          System.exit(0);
                     }    
@@ -205,6 +198,7 @@ public class Crossword
             {
                 System.out.println(rowStr[i].toString());
             }
+            //check letters againt the scores from hashtable
             for(int i=0;i<rowStr.length;i++)
             {
                  String word=rowStr[i].toString();
