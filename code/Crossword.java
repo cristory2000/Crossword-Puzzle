@@ -245,7 +245,7 @@ public class Crossword
              
              final long end = System.currentTimeMillis();
              //System.out.println("The program was running: " + (end-previousTime)/1000);
-             //System.out.println("Score: "+score);
+             System.out.println("Score: "+score);
            
         }
         private static Coordinates nextCoordinates(int row, int col)
