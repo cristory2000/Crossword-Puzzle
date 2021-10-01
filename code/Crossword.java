@@ -3,6 +3,7 @@ import java.io.*;
 
 
 
+
 public class Crossword 
 {
     private static char [][] crossword;
@@ -12,10 +13,15 @@ public class Crossword
     static int BoardSize;
     static int score;
     static Map<Character,Character> letters= new HashMap<>();
+    static int rowMinus[];
+    static int colMinus[];
+    static boolean minus=false;
+    private static long previousTime;
     public static void main(String args[]) throws IOException
     {
             //input the dictionary file through arguments
             
+            previousTime = System.currentTimeMillis();
             Scanner fileScan = new Scanner(new FileInputStream(args[0]));
             Scanner boardScan = new Scanner(new FileInputStream(args[1]));
             Scanner scoreBoard = new Scanner(new FileInputStream("letterpoints.txt"));
@@ -37,7 +43,8 @@ public class Crossword
             //initialize strinbuilder arrays  with sizes
             colStr= new StringBuilder[BoardSize];
             rowStr= new StringBuilder[BoardSize];
-            //initalize all stribuilders so they are not null
+            rowMinus=new int[BoardSize];
+            colMinus=new int[BoardSize];            //initalize all stribuilders so they are not null
             for (int i = 0; i < colStr.length; i++) {
                 colStr[i] = new StringBuilder("");
                 rowStr[i] = new StringBuilder("");
@@ -53,6 +60,7 @@ public class Crossword
             String line=scan.nextLine();
             BoardSize=Integer.parseInt(line);
             crossword= new char[BoardSize][BoardSize];
+
            //fill crowssword with test file
             for(int i=0;i<BoardSize;i++)
             {
@@ -60,6 +68,10 @@ public class Crossword
                 for(int j=0;j<BoardSize;j++)
                 {
                     crossword[i][j]=Character.toLowerCase(line.charAt(j));
+                    if(crossword[i][j]=='-')
+                    {
+                        minus=true;
+                    }
                 }
             }
             scan.close();
@@ -101,6 +113,9 @@ public class Crossword
                 case '-':
                     rowStr[row].append('-');
                     colStr[col].append('-');
+                    rowMinus[row]=col;
+                    colMinus[col]=row;                    
+                    
                     //if at bottom right
                     if(row == BoardSize-1 && col == BoardSize-1)
                         {
@@ -141,12 +156,28 @@ public class Crossword
         
         public static boolean isValid(char c,int row,int col)
         {
+            
             rowStr[row].append(c);
             colStr[col].append(c);
-                 
-           int rtype =(D.searchPrefix(rowStr[row]));
-            int ctype=(D.searchPrefix(colStr[col]));
-            //if col is not an end index
+            int rtype=0;
+            int ctype=0;
+            int minR=rowStr[row].toString().indexOf('-');
+            int minC=colStr[col].toString().indexOf('-');
+           //cases for when there is a minus
+          if(minR!=-1 ||minC!=-1)
+          {
+            
+                    rtype= D.searchPrefix(rowStr[row], minR+1, rowStr[row].length()-1);
+                     ctype= D.searchPrefix(colStr[col], minC+1, colStr[col].length()-1);
+                       // System.out.println("w");
+            }
+            else{
+                 rtype =(D.searchPrefix(rowStr[row]));
+                 ctype=(D.searchPrefix(colStr[col]));
+            }
+
+           
+            //if col is not an end index must be prefix
             if(col!=BoardSize-1)
             {
                 if((rtype==2||rtype==0))
@@ -156,8 +187,8 @@ public class Crossword
                     return false;
                   }
             }
-            //if col is an end index
-            if(col==BoardSize-1)
+            //if col is an end index must be word or there is a minus +1
+            if(col==BoardSize-1 || crossword[row][col+1]=='-')
             {
                 if((rtype==1||rtype==0))
                   {
@@ -178,7 +209,7 @@ public class Crossword
                  
             }
             //if row is at the end must be a word
-            if(row==BoardSize-1)
+            if(row==BoardSize-1||crossword[row+1][col]=='-')
             {
                 if((ctype==1||ctype==0))
                   {
@@ -209,11 +240,12 @@ public class Crossword
                      char v=letters.get(word.charAt(j));
                      score+=Character.getNumericValue(v);
                  }
+                }
              }
-                
-         
-             }
-             System.out.println("Score: "+score);
+             
+             final long end = System.currentTimeMillis();
+             //System.out.println("The program was running: " + (end-previousTime)/1000);
+             //System.out.println("Score: "+score);
            
         }
         private static Coordinates nextCoordinates(int row, int col)
