@@ -22,7 +22,7 @@ public class Crossword
             Scanner fileScan = new Scanner(new FileInputStream(args[0]));
             Scanner boardScan = new Scanner(new FileInputStream(args[1]));
             Scanner scoreBoard = new Scanner(new FileInputStream("letterpoints.txt"));
-            //add dictionary file and input the the dict8.txt file
+            //add dictionary class and input the the dict8.txt file
             D=new MyDictionary();
             while(fileScan.hasNext())
             {
