@@ -13,9 +13,6 @@ public class Crossword
     static int BoardSize;
     static int score;
     static Map<Character,Character> letters= new HashMap<>();
-    static int rowMinus[];
-    static int colMinus[];
-    static boolean minus=false;
     private static long previousTime;
     public static void main(String args[]) throws IOException
     {
@@ -43,8 +40,7 @@ public class Crossword
             //initialize strinbuilder arrays  with sizes
             colStr= new StringBuilder[BoardSize];
             rowStr= new StringBuilder[BoardSize];
-            rowMinus=new int[BoardSize];
-            colMinus=new int[BoardSize];            //initalize all stribuilders so they are not null
+               //initalize all stribuilders so they are not null
             for (int i = 0; i < colStr.length; i++) {
                 colStr[i] = new StringBuilder("");
                 rowStr[i] = new StringBuilder("");
@@ -68,10 +64,6 @@ public class Crossword
                 for(int j=0;j<BoardSize;j++)
                 {
                     crossword[i][j]=Character.toLowerCase(line.charAt(j));
-                    if(crossword[i][j]=='-')
-                    {
-                        minus=true;
-                    }
                 }
             }
             scan.close();
@@ -80,7 +72,7 @@ public class Crossword
         public static void crossFiller(int row,int col,StringBuilder[] rowStr,StringBuilder[] colStr)
         {
             Coordinates nextCoords;
-            
+            //switch cases for all possible symbols on the board
             switch(crossword[row][col])
             {
                 case '+':
@@ -102,8 +94,9 @@ public class Crossword
                             {
                                 //get next coordinates
                                 nextCoords = nextCoordinates(row, col);
-                                //recurse two next coordinate
+                                //recurse too next coordinate
                                 crossFiller (nextCoords.row, nextCoords.col, rowStr, colStr);
+                                //backtrack and try new letter
                                 rowStr[row].deleteCharAt(rowStr[row].length()-1);
                                 colStr[col].deleteCharAt(colStr[col].length()-1);  
                             }
@@ -111,10 +104,10 @@ public class Crossword
                     }
                     break;
                 case '-':
+                    //must append no need to check the word
                     rowStr[row].append('-');
                     colStr[col].append('-');
-                    rowMinus[row]=col;
-                    colMinus[col]=row;                    
+                                      
                     
                     //if at bottom right
                     if(row == BoardSize-1 && col == BoardSize-1)
@@ -169,7 +162,6 @@ public class Crossword
             
                     rtype= D.searchPrefix(rowStr[row], minR+1, rowStr[row].length()-1);
                      ctype= D.searchPrefix(colStr[col], minC+1, colStr[col].length()-1);
-                       // System.out.println("w");
             }
             else{
                  rtype =(D.searchPrefix(rowStr[row]));
@@ -187,7 +179,7 @@ public class Crossword
                     return false;
                   }
             }
-            //if col is an end index must be word or there is a minus +1
+            //if col is an end index must be word or there is a minus at +1 
             if(col==BoardSize-1 || crossword[row][col+1]=='-')
             {
                 if((rtype==1||rtype==0))
@@ -208,7 +200,7 @@ public class Crossword
                   }
                  
             }
-            //if row is at the end must be a word
+            //if row is at the end must be a word at +1 
             if(row==BoardSize-1||crossword[row+1][col]=='-')
             {
                 if((ctype==1||ctype==0))
@@ -229,7 +221,7 @@ public class Crossword
             {
                 System.out.println(rowStr[i].toString());
             }
-            //check letters againt the scores from hashtable
+            //check letters againt the scores from hashtable keys
             for(int i=0;i<rowStr.length;i++)
             {
                  String word=rowStr[i].toString();
