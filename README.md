@@ -1,11 +1,5 @@
 # CS 1501 – Algorithm Implementation – Assignment #1 
 
-*This assignment is adapted from Dr. John Ramirez’s CS 1501 class.*
-
-Due: Friday October 1st @ 11:59pm on Gradescope
-
-Late submission deadline: Sunday October 3rd @11:59pm with 10% penalty per late day
-
 ## Overview
  
 * __Purpose__:  To implement a backtracking algorithm.
@@ -66,24 +60,6 @@ Score: 22
 
 Depending upon your algorithm, the single solution that you find may differ from that of my program or your classmates' programs.  This is fine as long as all of the solutions are legal.  Note that because of the severe performance limitations of the `MyDictionary` class, some of the run-times for the test files will be very long.  See more details on this in `testFiles.html`. 
 
-
-## Important Notes:
-
-- For consistency, you **must** name your main program `Crossword.java`.
-- When grading your assignments, your TAs may redirect your output to a file so that they can refer to it at a later point.  To make sure this will work correctly, make sure that once your search algorithm begins there is _NO INPUT_ or anything that would make your program require any user interaction (since the TA will not see any prompts given that they will be sent to a file rather than the display).
-- To help you to get started, 
-    * first think of boards with all squares open (you can consider filled in squares later). In this case a solution for a `KxK` board will consist of `K` words of length `K` in the columns of the board and `K` words of length K in the rows of the board. 
-    * Your program has to make one decision for each square of the board. How many options do you have for each decision? What are these options? You will have to choose from the 26 letters.
-    * Construct an array of K `StringBuilder`s for the columns (call it `colStr`) and an array of K `StringBuilder`s for the rows (call it `rowStr`), each initially empty. Now consider a single recursive call at square `(i,j)` on the board. For an option (i.e., a letter) at position `(i,j)` to be valid, the following must be true: 
-      - If `j` is not an end index, then `rowStr[i]` + the letter a must be a valid prefix in the dictionary
-      - If `j` is an end index, then `rowStr[i]` + the letter must be a valid word in the dictionary 
-      - If `i` is not an end index, then `colStr[j]` + the letter must be a valid prefix in the dictionary 
-      - If `i` is an end index, then `colStr[j]` + the letter must be a valid word in the dictionary
-    * If the letter is valid, you append it to both corresponding `StringBuilder`s and recurse to the next square (unless you are on the last square of the board, in which case you have a solution!). If it is not valid you try the next character at that square or, if all have been tried, you backtrack. Refer to the backtracking template that we discussed in class.
-- **Search algorithm details**: Carefully consider the algorithm to fill the words into the board.  Make sure it potentially considers all possibilities yet does not waste time rechecking prefixes that have already been checked.   Although you are not required to use the exact algorithm described above, your algorithm must be a recursive backtracking algorithm that uses pruning.  The algorithm you use can vary greatly in its efficiency.  If your algorithm is very inefficient or otherwise poorly implemented, you will lose some style points.  This algorithm is a significant part of the overall assignment, so put a good amount of effort into doing it correctly.  For guidance on your board-filling algorithm, it is strongly recommended that you revise the Boggle game lab code (Lab 1).
-- The `MyDictionary` implementation of the `DictInterface` that is provided to you should work correctly, but it is not very efficient.  Note that it is doing a linear search of an `ArrayList` to determine if the argument is a prefix or word in the dictionary.  
--	Be sure to thoroughly document your code, especially the code that fills the board.
-
 ## Writeup
 
 Once you have completed your algorithm, write a short paper (500-750 words) using [Github Markdown syntax](https://guides.github.com/features/mastering-markdown/) and named `a1.md` that summarizes your project in the following ways:
@@ -98,36 +74,3 @@ Once you have completed your algorithm, write a short paper (500-750 words) usin
     * Number of possible letters in a crossword location
     * Number of crossword locations in the puzzle
 
-If you were unable to complete the crossword solving program, speculate (using some intelligent guessing) for the actual run-times.
-
-
-## Submission Requirements
-
-You must submit your Github repository to GradeScope. We will only grade the following files:
-1)	Crossword.java
-2)	Any other helper files that you had to add to support your implementation
-3)	`a1.md`: A well written/formatted paper explaining your search algorithm and results (see the Writeup section above for details on the paper) 
-4)	Assignment Information Sheet (including compilation and execution information).
-
-_The idea from your submission is that your TA (and/or the autiograder if available) can compile and run your programs from the command line WITHOUT ANY additional files or changes, so be sure to test it thoroughly before submitting it. If the TA (and/or the autiograder if available) cannot compile or run your submitted code it will be graded as if the program does not work.
-If you cannot get the programs working as given, clearly indicate any changes you made and clearly indicate why on your Assignment Information Sheet.  You will lose some credit for not getting it to work properly, but getting the main programs to work with modifications is better than not getting them to work at all.  A template for the Assignment Information Sheet can be found in this repository. You do not have to use this template, but your sheet should contain the same information._
-
-_Note: If you use an IDE, such as NetBeans, Eclipse, or IntelliJ, to develop your programs, make sure the programs will compile and run on the command-line before submitting – this may require some modifications to your program (e.g., removing package information)._
-
-## Rubrics 
-
-__*Please note that if an autograder is available, its score will be used as a guidance for the TA, not as an official final score*__.
-
-Item|Points
-----|------
-Basic search approach is correct|	10
-Search works for board with all open squares|	20
-Search works for board with filled in squares|	10
-Algorithm works in an efficient manner|	10
-Dictionary file read in/processed correctly|	5
-Crossword file read in/processed correctly| 5
-Output generated / formatted correctly|	10
-Solution score computed correctly|	5
-Write-up paper|	10
-Code style and documentation|	10
-Assignment Information Sheet|	5
