@@ -58,7 +58,6 @@ Score: 22
 >
 ```
 
-Depending upon your algorithm, the single solution that you find may differ from that of my program or your classmates' programs.  This is fine as long as all of the solutions are legal.  Note that because of the severe performance limitations of the `MyDictionary` class, some of the run-times for the test files will be very long.  See more details on this in `testFiles.html`. 
 
 ## Writeup
 
